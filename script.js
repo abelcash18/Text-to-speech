@@ -1,35 +1,101 @@
-// JavaScript Document
+document.addEventListener('DOMContentLoaded', () => {
+  const synth = window.speechSynthesis;
 
-//make variabel
-let textArea = document.getElementById('textArea');
-let btn = document.getElementsByTagName('button')[0];
+  // DOM Elements
+  const textArea = document.getElementById('textArea');
+  const speakBtn = document.getElementById('speakBtn');
+  const stopBtn = document.getElementById('stopBtn');
+  const voiceSelect = document.getElementById('voiceSelect');
+  const rateInput = document.getElementById('rate');
+  const pitchInput = document.getElementById('pitch');
+  const rateValue = document.getElementById('rateValue');
+  const pitchValue = document.getElementById('pitchValue');
 
-// check if you click on the button
-btn.addEventListener('click', function(){
+  let voices = [];
 
-  //check if textarea is blank
-   if(textArea.value==""){
-       //give alert
-       alert("Please don't be blank!");
+  // Populate native browser voices dynamically
+  const populateVoiceList = () => {
+    voices = synth.getVoices();
+    voiceSelect.innerHTML = '';
 
-  //check if you has been enter a text on textarea
-   }else{
+    if (voices.length === 0) {
+      voiceSelect.innerHTML = '<option disabled>No voices available</option>';
+      return;
+    }
 
-      //init responVoice speak
-      responsiveVoice.speak(
-
-      //take the tag textarea
-      textArea.value,
-
-      //choose us english female
-      "US English Female",
-      {
-
-      //give a voice
-      pitch: 1, 
-      rate: 1, 
-      volume: 1
+    voices.forEach((voice, index) => {
+      const option = document.createElement('option');
+      option.textContent = `${voice.name} (${voice.lang})`;
+      option.setAttribute('data-lang', voice.lang);
+      option.setAttribute('data-name', voice.name);
+      
+      // Default to an English voice or the first available
+      if (voice.default || voice.lang.startsWith('en')) {
+        option.selected = true;
       }
-    );
+
+      voiceSelect.appendChild(option);
+    });
+  };
+
+  populateVoiceList();
+  if (speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = populateVoiceList;
   }
+
+  // Update slider displays
+  rateInput.addEventListener('input', () => rateValue.textContent = rateInput.value);
+  pitchInput.addEventListener('input', () => pitchValue.textContent = pitchInput.value);
+
+  // Speak Functionality
+  const speak = () => {
+    // If actively speaking, stop previous instance
+    if (synth.speaking) {
+      synth.cancel();
+    }
+
+    const text = textArea.value.trim();
+
+    if (!text) {
+      alert('Please enter some text to speak!');
+      return;
+    }
+
+    const utterThis = new SpeechSynthesisUtterance(text);
+
+    // Selected Voice setup
+    const selectedOption = voiceSelect.selectedOptions[0]?.getAttribute('data-name');
+    const selectedVoice = voices.find(v => v.name === selectedOption);
+    if (selectedVoice) {
+      utterThis.voice = selectedVoice;
+    }
+
+    // Rate and Pitch
+    utterThis.rate = parseFloat(rateInput.value);
+    utterThis.pitch = parseFloat(pitchInput.value);
+
+    // UI state handlers during speech
+    utterThis.onstart = () => {
+      speakBtn.disabled = true;
+      stopBtn.disabled = false;
+      speakBtn.textContent = 'Speaking...';
+    };
+
+    utterThis.onend = utterThis.onerror = () => {
+      speakBtn.disabled = false;
+      stopBtn.disabled = true;
+      speakBtn.textContent = 'Speak Text';
+    };
+
+    synth.speak(utterThis);
+  };
+
+  // Event Listeners
+  speakBtn.addEventListener('click', speak);
+
+  stopBtn.addEventListener('click', () => {
+    if (synth.speaking) {
+      synth.cancel();
+    }
+  });
 });
