@@ -1,42 +1,46 @@
 :root {
   --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-  --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.4);
+  --shadow-glow: 0 0 25px rgba(168, 85, 247, 0.4);
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-body {
+/* 4K Background Image Setup */
+body.bg-4k {
   margin: 0;
-  overflow-x: hidden;
-  background-color: #0f172a; /* Dark sleek background */
+  min-height: 100vh;
+  /* Replace URL below with your local 4K image file (e.g. url('bg.jpg')) if preferred */
+  background: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=3840&auto=format&fit=crop') no-repeat center center fixed;
+  background-size: cover;
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   color: #f8fafc;
+  position: relative;
 }
 
-/* Fixed 3D Canvas Background */
-#bg-canvas {
+/* Dark tint overlay for visual balance */
+.bg-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
   z-index: 0;
-  pointer-events: none;
 }
 
-/* Ensure UI elements sit above the 3D background */
 .main-content {
   position: relative;
   z-index: 1;
 }
 
-/* Glassmorphism Card Effect */
+/* Glassmorphism Card Effect over 4K Image */
 .card {
-  background: rgba(30, 41, 59, 0.75) !important;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: rgba(15, 23, 42, 0.75) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
   border-radius: 24px !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
   animation: cardAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -51,17 +55,17 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* Form Styling */
+/* Inputs & Form Controls */
 .form-control, .form-select {
-  background-color: rgba(15, 23, 42, 0.6) !important;
+  background-color: rgba(30, 41, 59, 0.7) !important;
   color: #f8fafc !important;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px !important;
 }
 
 .form-control:focus, .form-select:focus {
   border-color: #a855f7;
-  box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.25);
+  box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.3);
 }
 
 .form-control::placeholder {
@@ -90,7 +94,7 @@ body {
 
 .btn-outline-secondary {
   color: #cbd5e1 !important;
-  border-color: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
   border-radius: 12px !important;
 }
 
@@ -98,7 +102,7 @@ body {
   background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-/* Audio Pulse Effect for Speak Button */
+/* Speaking State Glow Animation */
 .is-speaking {
   animation: pulseGlow 1.2s infinite ease-in-out;
 }
