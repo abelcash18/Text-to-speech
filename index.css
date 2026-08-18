@@ -1,85 +1,86 @@
-/* ==========================================
-   Root & Theme Variables
-   ========================================== */
 :root {
   --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-  --primary-hover: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
-  --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  --card-bg: rgba(255, 255, 255, 0.9);
-  --shadow-soft: 0 20px 40px rgba(0, 0, 0, 0.08);
-  --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.35);
+  --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.4);
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ==========================================
-   Background & Entry Animations
-   ========================================== */
 body {
-  background: var(--bg-gradient);
-  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  background-color: #0f172a; /* Dark sleek background */
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  color: #1e293b;
+  color: #f8fafc;
 }
 
-/* Smooth Fade-In + Slide-Up for the main card */
+/* Fixed 3D Canvas Background */
+#bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Ensure UI elements sit above the 3D background */
+.main-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Glassmorphism Card Effect */
 .card {
-  background: var(--card-bg) !important;
-  backdrop-filter: blur(12px);
-  border-radius: 20px !important;
-  box-shadow: var(--shadow-soft);
+  background: rgba(30, 41, 59, 0.75) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   animation: cardAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  transform: translateY(20px);
-  opacity: 0;
 }
 
 @keyframes cardAppear {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* ==========================================
-   Interactive Controls & Inputs
-   ========================================== */
+.text-gradient {
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-/* Textarea subtle glow on focus */
+/* Form Styling */
 .form-control, .form-select {
+  background-color: rgba(15, 23, 42, 0.6) !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 12px !important;
-  border: 1px solid #cbd5e1;
-  transition: var(--transition-smooth);
 }
 
 .form-control:focus, .form-select:focus {
   border-color: #a855f7;
-  box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15);
+  box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.25);
 }
 
-/* Custom Animated Range Sliders */
+.form-control::placeholder {
+  color: #94a3b8;
+}
+
+/* Range Sliders */
 .form-range::-webkit-slider-thumb {
-  background: #6366f1;
-  transition: var(--transition-smooth);
+  background: #a855f7;
 }
 
-.form-range::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
-  box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
-}
-
-/* ==========================================
-   Buttons & Speaking Pulse Animation
-   ========================================== */
-
-/* Primary Action Button */
+/* Buttons */
 .btn-primary {
   background: var(--primary-gradient) !important;
   border: none !important;
   border-radius: 12px !important;
   font-weight: 600;
-  padding: 0.6rem 1.5rem;
+  padding: 0.65rem 1.5rem;
   transition: var(--transition-smooth);
-  position: relative;
-  overflow: hidden;
 }
 
 .btn-primary:hover:not(:disabled) {
@@ -87,33 +88,23 @@ body {
   box-shadow: var(--shadow-glow);
 }
 
-.btn-primary:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-/* Secondary Button (Stop) */
 .btn-outline-secondary {
+  color: #cbd5e1 !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
   border-radius: 12px !important;
-  transition: var(--transition-smooth);
 }
 
 .btn-outline-secondary:hover:not(:disabled) {
-  transform: translateY(-2px);
+  background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-/* Speaking State: Pulse Animation */
+/* Audio Pulse Effect for Speak Button */
 .is-speaking {
-  animation: pulseGlow 1.5s infinite ease-in-out;
+  animation: pulseGlow 1.2s infinite ease-in-out;
 }
 
 @keyframes pulseGlow {
-  0% {
-    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 12px rgba(99, 102, 241, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
-  }
+  0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.8); }
+  70% { box-shadow: 0 0 0 15px rgba(168, 85, 247, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
 }
