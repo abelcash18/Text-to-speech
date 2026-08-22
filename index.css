@@ -28,7 +28,8 @@ body::after { width:640px; height:640px; right:-310px; bottom:-270px; background
 }
 .cute-footer p {
     margin: 0;
-    color: #f8fafc;
+    color: #1d1e1e;
     font-size: 0.82rem;
     text-align: center;
+    font-weight: 800;
 }
